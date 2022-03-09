@@ -1,0 +1,85 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+</head>
+<script src="../js/html2canvas.js"></script>
+<style>
+  #logo {
+    background-image: linear-gradient(to bottom right, #CCFBFF, #ef96c5);
+    height: 360;
+    width: 480;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+  }
+
+  #name {
+    font-size: 80px;
+    transform: rotate(-4deg);
+    position: absolute;
+    top: 40px;
+    left: 100px;
+    text-shadow: -1px 0 #ffcc00;
+
+  }
+
+  #text {
+    border: 1px;
+    color: #6667AB;
+    size: 120px;
+    position: relative;
+    font-style: italic;
+  }
+</style>
+
+<body id="body">
+
+
+  <div id="logo">
+    <div id="name">
+      <p id='text'>Jerrvis</p>
+    </div>
+  </div>
+  <hr>
+  <div>
+    <button id="but" onclick="printPhoto('logo')">save</button>
+  </div>
+
+</body>
+<script>
+  function printPhoto(tab) {
+    html2canvas(document.querySelector("#" + tab)).then(canvas => {
+
+      // 图片导出为 png 格式
+      var type = 'png';
+      var imgData = canvas.toDataURL(type);
+      var _fixType = function (type) {
+        type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+        var r = type.match(/png|jpeg|bmp|gif/)[0];
+        return 'image/' + r;
+      };
+
+      // 加工image data，替换mime type
+      imgData = imgData.replace(_fixType(type), 'image/octet-stream');
+
+      //console.log(imgData);
+
+      var saveFile = function (data, filename) {
+        var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+        save_link.href = data;
+        save_link.download = filename;
+
+        var event = document.createEvent('MouseEvents');
+        event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        save_link.dispatchEvent(event);
+      };
+
+      // 下载后的文件名
+      var filename = 'logo_v0.1.3' + '.' + type;
+      // download
+      saveFile(imgData, filename);
+
+    });
+  }
+</script>
+
+</html>
